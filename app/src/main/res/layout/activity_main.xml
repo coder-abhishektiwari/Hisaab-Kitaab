@@ -1,0 +1,215 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".MainActivity">
+
+    <!-- App Bar -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="20dp"
+            app:title="@string/app_name"
+            app:titleTextColor="?attr/colorPrimary"/>
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_user_image"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/settings" />
+    </RelativeLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_below="@id/header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="16dp">
+
+            <!-- CardView for Upcoming Notification -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#663F51B5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingVertical="7dp"
+                    android:paddingHorizontal="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upcoming_notification"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorPrimary"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView for Summary -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/account_summary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/textPrimary"/>
+                        <TextView
+                            android:id="@+id/btn_view_reports"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/view_reports"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorPrimary"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/your_salary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/your_salary"
+                        android:textSize="16sp"
+                        android:textColor="@color/textSecondary"
+                        android:layout_marginTop="4dp"/>
+                    <TextView
+                        android:id="@+id/total_received"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_received"
+                        android:textSize="16sp"
+                        android:textColor="@color/textSecondary"/>
+                    <TextView
+                        android:id="@+id/you_spent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/you_spent"
+                        android:textSize="16sp"
+                        android:textColor="@color/textSecondary"/>
+
+                    <TextView
+                        android:id="@+id/current_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/current_balance"
+                        android:textSize="16sp"
+                        android:textColor="@color/textSecondary"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <!-- CardView for Reports -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/recent_transactions"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_margin="16dp"
+                        android:textColor="@color/textPrimary"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/btn_view_all_transactions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_all"
+                        android:layout_gravity="end"
+                        android:textColor="?attr/colorPrimary"
+                        android:layout_margin="16dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_payment"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_payment_received"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/received_payment"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

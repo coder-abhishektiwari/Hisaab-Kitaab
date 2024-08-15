@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="20dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_payment"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txt_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rs"
+                android:textSize="30sp"
+                android:textColor="@color/textPrimary"
+                android:layout_marginTop="30dp"/>
+
+            <EditText
+                android:id="@+id/edt_paid_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@+id/txt_currency"
+                android:autofillHints="true"
+                android:background="@color/white"
+                android:hint="@string/_0"
+                android:inputType="number"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                tools:ignore="LabelFor,TextContrastCheck,TouchTargetSizeCheck" />
+
+        </RelativeLayout>
+
+
+        <!--Paid to-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paid_to"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_paid_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:autofillHints=""
+            android:background="@drawable/edit_background"
+            android:hint="@string/eg_janta_daily_needs"
+            android:inputType="text"
+            android:textColor="@color/textSecondary"
+            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+        <!--For Which-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/for_which"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_for_which"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:autofillHints=""
+            android:background="@drawable/edit_background"
+            android:hint="@string/eg_for_grocery"
+            android:inputType="text"
+            android:textColor="@color/textSecondary"
+            tools:ignore="TouchTargetSizeCheck" />
+
+
+
+        <CheckBox
+            android:id="@+id/checkbox_is_lending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/are_you_lending_this_money"/>
+
+        <!--add button-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_background"
+            android:text="@string/add"
+            android:textColor="@android:color/white"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
