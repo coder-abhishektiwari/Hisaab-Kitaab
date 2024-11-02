@@ -10,22 +10,28 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.bumptech.glide.Glide;
+import com.example.hisaabkitaab.HomeContents.ChartHelper;
 import com.example.hisaabkitaab.databinding.ActivityMainBinding;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 
 public class MainActivity extends AppCompatActivity {
 private ActivityMainBinding binding;
@@ -39,27 +45,20 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
         setContentView(view);
         setSupportActionBar(binding.toolbar);  //setting toolbar
 
+
         //user image click
-        findViewById(R.id.toolbar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            }
-        });
+        findViewById(R.id.toolbar).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
         loadSettings();
         //getting monthly summary
         getMonthlySummary();
 
         //display charts
-        binding.btnViewReports.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reportsDialog = new Dialog(MainActivity.this);
-                reportsDialog.setContentView(R.layout.dialog_reports);
+        binding.btnViewReports.setOnClickListener(v -> {
+            reportsDialog = new Dialog(MainActivity.this);
+            reportsDialog.setContentView(R.layout.dialog_reports);
 
 
-                reportsDialog.show();
-            }
+            reportsDialog.show();
         });
 
         //10 recent transaction
@@ -70,16 +69,45 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
         onClickReceivePayment();  //receive payment
         onClickAddPayment();  //add payment
 
-        binding.btnViewReports.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog reportsDialog = new Dialog(MainActivity.this);
-                reportsDialog.setContentView(R.layout.dialog_reports);
-                reportsDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                reportsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        binding.btnViewReports.setOnClickListener(v -> {
+            Dialog reportsDialog = new Dialog(MainActivity.this);
+            reportsDialog.setContentView(R.layout.dialog_reports);
+            reportsDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            reportsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 
-                reportsDialog.show();
-            }
+            LineChart expenseChart = reportsDialog.findViewById(R.id.expenseChart);
+            LineChart incomeChart = reportsDialog.findViewById(R.id.incomeChart);
+            PieChart profitLoss = reportsDialog.findViewById(R.id.profitloss);
+
+
+            ChartHelper chartHelper = new ChartHelper(this, reportsDialog, expenseChart, incomeChart, profitLoss);
+
+            //time range selection
+            Spinner spinner= reportsDialog.findViewById(R.id.timeRangeSpinner);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedTimeRange = parent.getItemAtPosition(position).toString();
+                    chartHelper.filterChartData(selectedTimeRange);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle case where nothing is selected
+                }
+            });
+
+
+            //setting charts
+            List<Entry> expenseEntries = new ArrayList<>();
+            chartHelper.lineChart(expenseChart, expenseEntries, "expense", "Paid to ", "Given on lend to ");
+
+            List<Entry> incomeEntries = new ArrayList<>();
+            chartHelper.lineChart(incomeChart, incomeEntries, "income", "Borrowed from ", "Received from ");
+
+            reportsDialog.show();
+            chartHelper.pieChart();
         });
 
     }
@@ -122,21 +150,6 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
         } else {
             binding.yourSalary.setText("₹0.0");
         }
-    }
-
-    private void getMonthlySummary(){
-        DBHelper dbHelper = new DBHelper(this);
-        double[] summary = dbHelper.getCurrentMonthSummary();
-
-        double totalSpending = summary[0];
-        double totalReceived = summary[1];
-        double currentBalance = summary[2];
-        binding.youSpent.setText("Spending: ₹" + totalSpending);
-        binding.totalReceived.setText("Received: ₹" + totalReceived);
-        binding.currentBalance.setText("Balance: ₹" + dbHelper.getCurrentBalance());
-
-
-
     }
 
     private void onClickReceivePayment(){
@@ -189,7 +202,6 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
             }
         });
     }
-
     private void onClickAddPayment(){
         binding.btnAddPayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +252,6 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
             }
         });
     }
-
     private void fetchRecentTransaction(){
         DBHelper db = new DBHelper(this);
         ArrayList<TransactionModel> recentTransactionsList = db.getAllTransactions(5); // Fetch transactions from database
@@ -249,11 +260,17 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
         db.close(); // Close the database connection
 
     }
+    private void getMonthlySummary(){
+        DBHelper dbHelper = new DBHelper(this);
+        double[] summary = dbHelper.getCurrentMonthSummary();
 
-
-
-
-
+        double totalSpending = summary[0];
+        double totalReceived = summary[1];
+        double currentBalance = summary[2];
+        binding.youSpent.setText("Spending: ₹" + totalSpending);
+        binding.totalReceived.setText("Received: ₹" + totalReceived);
+        binding.currentBalance.setText("Balance: ₹" + dbHelper.getCurrentBalance());
+    }
 
     //TransactionModel(String date, String transactor, String description, String type, String amount, String balance)
     //database methods
@@ -287,6 +304,5 @@ private Dialog recievePaymentDialog, addPaymentDialog, reportsDialog;
     }
 
 
-
-
 }
+

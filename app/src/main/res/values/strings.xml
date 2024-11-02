@@ -52,4 +52,14 @@
     <string name="login">Login</string>
     <string name="remove_password_note">(Empty the textbox to remove password and save)</string>
     <string name="expense_report">Expense Report</string>
+    <string name="income_report">Income Report</string>
+    <string name="profit_amp_loss"><![CDATA[Profit & Loss]]></string>
+    <string name="your_reports">Your Reports</string>
+    <string name="where_you_spend">Where you spend?</string>
+    <string-array name="time_ranges"><item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+        <item>3 Years</item>
+    </string-array>
+
 </resources>

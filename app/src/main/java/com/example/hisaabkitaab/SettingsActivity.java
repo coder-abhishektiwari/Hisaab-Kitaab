@@ -69,8 +69,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveDetails();
-                Toast.makeText(SettingsActivity.this, "Setting saved Successfully", Toast.LENGTH_SHORT).show();
-                finish();
+                if (saveDetails().length() <= 4){
+                    Toast.makeText(SettingsActivity.this, "Setting saved Successfully", Toast.LENGTH_SHORT).show();
+                    binding.txtPasswordError.setText("");
+                    finish();
+                } else {
+                    Toast.makeText(SettingsActivity.this, "Only 4 digit are allowed", Toast.LENGTH_SHORT).show();
+                    binding.txtPasswordError.setText("Only 4 digit are allowed");
+                }
+
             }
         });
 
@@ -117,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
             editText.setText("");
         }
     }
-    private void saveDetails(){
+    private String saveDetails(){
         String name = Objects.requireNonNull(binding.edtName.getText()).toString();
         String salary = Objects.requireNonNull(binding.edtSalary.getText()).toString();
         String mobile = Objects.requireNonNull(binding.edtMobile.getText()).toString().trim();
@@ -126,11 +133,14 @@ public class SettingsActivity extends AppCompatActivity {
         if (imageUri != null) {
             editor.putString("image_uri", imageUri.toString());
         }
-        editor.putString("name", name);
-        editor.putString("salary", salary);
-        editor.putString("mobile",mobile);
-        editor.putString("password", password);
-        editor.apply();
+        if (password.length() <= 4){
+            editor.putString("name", name);
+            editor.putString("salary", salary);
+            editor.putString("mobile",mobile);
+            editor.putString("password", password);
+            editor.apply();
+        }
+        return password;
     }
     public void imageDialog() {
         dialog = new Dialog(SettingsActivity.this);

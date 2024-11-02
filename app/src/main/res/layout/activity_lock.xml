@@ -8,55 +8,125 @@
     android:orientation="vertical"
     tools:context=".LockActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <ImageView
-            android:id="@+id/login_user_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/icon_user_image"/>
-
-        <TextView
-            android:id="@+id/txt_greet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hi_abhishek"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="10dp"
-            android:textSize="20sp"/>
-        <!--password-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textColor="@color/textPrimary"
-            android:layout_marginTop="10dp"/>
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edt_enter_password"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_background"
-            android:hint="@string/enter_your_password"
-            android:inputType="numberPassword"
-            android:textColor="@color/textSecondary"
-            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginTop="15dp"
-            android:text="@string/login"
-            android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/login_user_logo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_user_image"/>
+
+            <TextView
+                android:id="@+id/txt_greet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hi_abhishek"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="10dp"
+                android:textSize="20sp"/>
+            <!--password-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter PIN"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="10dp"
+                android:textSize="20sp"/>
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:paddingVertical="10dp">
 
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tvPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="3"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter1"
+                    android:text="1"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter2"
+                    android:text="2"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter3"
+                    android:text="3"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter4"
+                    android:text="4"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter5"
+                    android:text="5"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter6"
+                    android:text="6"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter7"
+                    android:text="7"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter8"
+                    android:text="8"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter9"
+                    android:text="9"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enterx"
+                    android:text="❌"
+                    style="@style/LoginButtonStyle"
+                    android:background="@color/transparent"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_enter0"
+                    android:text="0"
+                    style="@style/LoginButtonStyle"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_login"
+                    android:text="✔"
+                    android:textColor="@color/black"
+                    style="@style/LoginButtonStyle"
+                    android:background="@color/transparent"/>
+
+            </GridLayout>
+
+            <ImageView
+                android:id="@+id/btnBiometric"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fingerprint"
+                android:layout_gravity="center_horizontal"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

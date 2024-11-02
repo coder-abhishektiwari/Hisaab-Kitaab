@@ -12,9 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.data.Entry;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -214,4 +219,42 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return currentBalance;
     }
+
+
+    //get Transaction Between dates
+    public List<Entry> getTransactionsBetweenDates(String startDate, String endDate, String type1, String type2) {
+        List<Entry> entries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT TRANSACTION_DATE, AMOUNT FROM transactions WHERE TRANSACTION_DATE BETWEEN ? AND ? AND TRANSACTION_TYPE IN (?, ?)",
+                new String[]{startDate, endDate, type1, type2}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                String dateString = cursor.getString(0);
+                float amount = cursor.getFloat(1);
+
+                // Convert dateString to float for the x-axis
+                try {
+                    Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dateString);
+                    float xValue = date.getTime();
+                    entries.add(new Entry(xValue, amount));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return entries;
+    }
+
+
+
+
 }

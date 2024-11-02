@@ -9,14 +9,79 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/expense_report"
-            android:textColor="@color/textPrimary"/>
+        android:orientation="vertical"
+        android:layout_marginVertical="20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/your_reports"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"/>
+            <Spinner
+                android:id="@+id/timeRangeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:entries="@array/time_ranges" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/expense_report"
+                        android:textColor="@color/textPrimary"/>
+
+                </RelativeLayout>
+
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/expenseChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/income_report"
+                    android:textColor="@color/textPrimary"/>
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/incomeChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/where_you_spend"
+                    android:textColor="@color/textPrimary"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/profitloss"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
+
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
+
+
 
 
 </androidx.cardview.widget.CardView>
