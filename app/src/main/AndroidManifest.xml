@@ -17,11 +17,11 @@
         android:theme="@style/Theme.HisaabKitaab"
         tools:targetApi="31">
         <activity
-            android:name=".LockActivity"
+            android:name=".ui.Lock.LockActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,15 +30,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
-            android:name=".ShowTransactionsActivity"
+            android:name=".ui.activities.TransactionsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="false"></activity>
     </application>
 

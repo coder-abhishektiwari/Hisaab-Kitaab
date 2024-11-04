@@ -15,4 +15,9 @@
         <item name="android:layout_height">70dp</item>
         <item name="android:layout_width">70dp</item>
     </style>
+
+    <style name="MyProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
 </resources>

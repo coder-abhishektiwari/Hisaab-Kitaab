@@ -1,4 +1,4 @@
-package com.example.hisaabkitaab;
+package com.example.hisaabkitaab.ui.Lock;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.hisaabkitaab.ui.activities.MainActivity;
+import com.example.hisaabkitaab.R;
 import com.example.hisaabkitaab.databinding.ActivityLockBinding;
 
 public class LockActivity extends AppCompatActivity {
@@ -54,7 +56,7 @@ public class LockActivity extends AppCompatActivity {
         //check if password is set
         //btnLogin handling
         if (password == "" || password == null){
-            startActivity(new Intent(LockActivity.this,MainActivity.class));
+            startActivity(new Intent(LockActivity.this, MainActivity.class));
             finish();
         }else{
             setSavedImage(savedImageUri,binding.loginUserLogo);

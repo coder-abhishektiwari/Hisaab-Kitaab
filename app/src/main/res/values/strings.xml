@@ -56,10 +56,13 @@
     <string name="profit_amp_loss"><![CDATA[Profit & Loss]]></string>
     <string name="your_reports">Your Reports</string>
     <string name="where_you_spend">Where you spend?</string>
-    <string-array name="time_ranges"><item>Weekly</item>
+    <string-array name="time_ranges">
+        <item>Weekly</item>
         <item>Monthly</item>
         <item>Yearly</item>
         <item>3 Years</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

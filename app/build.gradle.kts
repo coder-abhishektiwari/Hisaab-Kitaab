@@ -49,6 +49,7 @@ dependencies {
     implementation("androidx.media3:media3-common:1.4.1")
     implementation("com.google.ar.sceneform:filament-android:1.17.1")
     implementation("androidx.biometric:biometric:1.1.0")
+    implementation("com.google.android.material:material:1.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

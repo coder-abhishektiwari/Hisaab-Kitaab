@@ -1,4 +1,4 @@
-package com.example.hisaabkitaab;
+package com.example.hisaabkitaab.model;
 
 public class TransactionModel {
     private String id;

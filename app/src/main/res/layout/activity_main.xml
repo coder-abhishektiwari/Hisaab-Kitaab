@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <!-- App Bar -->
     <RelativeLayout
@@ -43,11 +43,12 @@
             android:orientation="vertical"
             android:layout_marginHorizontal="16dp">
 
-            <!-- CardView for Upcoming Notification -->
+            <!-- CardView for Budget Progress -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvBudget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="6dp"
                 app:cardCornerRadius="30dp"
                 app:cardElevation="4dp"
                 android:backgroundTint="#663F51B5">
@@ -56,19 +57,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingVertical="7dp"
-                    android:paddingHorizontal="14dp">
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="5dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/budgetProgress"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/upcoming_notification"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorPrimary"/>
-
+                        app:trackColor="@color/transparent"
+                        android:progressTint="@color/colorPrimary"
+                        app:trackThickness="20dp"
+                        app:trackCornerRadius="20dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" >
+                <TextView
+                    android:id="@+id/txtBudgetStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You spent Rs.200 from your budget"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"/>
+                <TextView
+                    android:id="@+id/txtBudget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.500"
+                    android:textColor="@color/black"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
 
             <!-- CardView for Summary -->
             <androidx.cardview.widget.CardView

@@ -1,6 +1,4 @@
-package com.example.hisaabkitaab;
-import android.content.Context;
-import android.widget.Toast;
+package com.example.hisaabkitaab.ui.Lock;
 
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricPrompt;

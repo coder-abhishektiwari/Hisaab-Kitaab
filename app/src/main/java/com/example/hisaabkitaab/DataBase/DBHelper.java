@@ -1,4 +1,4 @@
-package com.example.hisaabkitaab;
+package com.example.hisaabkitaab.DataBase;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.hisaabkitaab.model.TransactionModel;
 import com.github.mikephil.charting.data.Entry;
 
 import java.text.ParseException;
@@ -36,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TRANSACTION_TYPE = "TRANSACTION_TYPE"; //paid/received/lending/borrow
     private static final String AMOUNT = "AMOUNT";
     private static final String BALANCE = "BALANCE";
+
     public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -61,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addTransaction(TransactionModel model){
+    public void addTransaction(TransactionModel model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(TRANSACTION_ID, model.getId());
@@ -70,23 +72,31 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DESCRIPTION, model.getDescription());
         cv.put(TRANSACTION_TYPE, model.getType());
         cv.put(AMOUNT, model.getAmount());
-        cv.put(BALANCE,model.getBalance());
-        try{
+        cv.put(BALANCE, model.getBalance());
+        try {
             db.insert(TABLE_NAME, null, cv);
-        }catch(SQLiteException e){
+        } catch (SQLiteException e) {
             Log.e("database", "Error inserting task into database", e);
             Toast.makeText(context, "Error inserting task into database", Toast.LENGTH_SHORT).show();
-        }finally {
+        } finally {
             db.close();
         }
     }
-    public ArrayList<TransactionModel> getAllTransactions(){
+
+    public void deleteTransaction(String position) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, TRANSACTION_ID + " = ?", new String[]{position});
+        db.close();
+    }
+
+
+    public ArrayList<TransactionModel> getAllTransactions() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+ TRANSACTION_ID + " DESC";
-        Cursor cursor = db.rawQuery(query,null);
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + TRANSACTION_ID + " DESC";
+        Cursor cursor = db.rawQuery(query, null);
         ArrayList<TransactionModel> transactionList = new ArrayList<>();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             TransactionModel model = new TransactionModel();
             model.setId(cursor.getString(0));
             model.setDate(cursor.getString(1));
@@ -101,13 +111,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return transactionList;
     }
-    public ArrayList<TransactionModel> getAllTransactions(int limit){
+
+    public ArrayList<TransactionModel> getAllTransactions(int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+ TRANSACTION_ID + " DESC LIMIT " + limit;
-        Cursor cursor = db.rawQuery(query,null);
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + TRANSACTION_ID + " DESC LIMIT " + limit;
+        Cursor cursor = db.rawQuery(query, null);
         ArrayList<TransactionModel> transactionList = new ArrayList<>();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             TransactionModel model = new TransactionModel();
             model.setId(cursor.getString(0));
             model.setDate(cursor.getString(1));
@@ -122,6 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return transactionList;
     }
+
     @SuppressLint("Range")
     public double[] getCurrentMonthSummary() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -162,7 +174,6 @@ public class DBHelper extends SQLiteOpenHelper {
             int columnIndex = receivedCursor.getColumnIndex("totalReceived");
             if (columnIndex != -1) {
                 totalReceived = receivedCursor.getDouble(columnIndex);
-                Log.d("DatabaseDebug", "Total Received: " + totalReceived);
             }
         } else {
             Log.d("DatabaseDebug", "No received data found.");
@@ -205,16 +216,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return new String[]{firstDate, lastDate};
     }
 
-
-
     public double getCurrentBalance() {
         double currentBalance = 0.0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + BALANCE + " FROM " + TABLE_NAME + " ORDER BY " + TRANSACTION_ID + " DESC LIMIT 1", null);
-        if (cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             currentBalance = cursor.getDouble(0);
         }
-        if (cursor != null){
+        if (cursor != null) {
             cursor.close();
         }
         return currentBalance;
@@ -252,9 +261,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return entries;
+
+
     }
-
-
-
-
 }
