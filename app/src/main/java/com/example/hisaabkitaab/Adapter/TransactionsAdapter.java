@@ -3,7 +3,6 @@ package com.example.hisaabkitaab.Adapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hisaabkitaab.DataBase.DBHelper;
 import com.example.hisaabkitaab.R;
-import com.example.hisaabkitaab.model.TransactionModel;
-import com.example.hisaabkitaab.ui.activities.TransactionsActivity;
+import com.example.hisaabkitaab.model.Transaction;
 
 import java.util.ArrayList;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.ViewHolder> {
     private final Context context;
-    private final ArrayList<TransactionModel> transactionsList;
+    private final ArrayList<Transaction> transactionsList;
     private final OnTransactionDeleteListener deleteListener;
 
-    public TransactionsAdapter(Context context, ArrayList<TransactionModel> transactionsList, OnTransactionDeleteListener deleteListener) {
+    public TransactionsAdapter(Context context, ArrayList<Transaction> transactionsList, OnTransactionDeleteListener deleteListener) {
         this.context = context;
         this.transactionsList = transactionsList;
         this.deleteListener = deleteListener;
@@ -40,7 +38,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TransactionsAdapter.ViewHolder holder, int position) {
-        TransactionModel transaction = transactionsList.get(position);
+        Transaction transaction = transactionsList.get(position);
         String descriptionText = transaction.getDescription().isEmpty() ? "" : " for " + transaction.getDescription();
         String header = transaction.getType() + transaction.getTransactor() + descriptionText;
 
@@ -87,7 +85,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
 
     private void deleteTransaction(int position) {
         DBHelper db = new DBHelper(context);
-        TransactionModel model = transactionsList.get(position);
+        Transaction model = transactionsList.get(position);
         db.deleteTransaction(model.getId());
         transactionsList.remove(position);
         notifyItemRemoved(position);

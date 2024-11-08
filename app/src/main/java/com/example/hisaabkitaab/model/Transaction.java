@@ -1,6 +1,6 @@
 package com.example.hisaabkitaab.model;
 
-public class TransactionModel {
+public class Transaction {
     private String id;
     private String date;
     private String transactor;
@@ -9,7 +9,7 @@ public class TransactionModel {
     private String amount;
     private String balance;
 
-    public TransactionModel(String date, String transactor, String description, String type, String amount, String balance) {
+    public Transaction(String date, String transactor, String description, String type, String amount, String balance) {
         this.date = date;
         this.transactor = transactor;
         this.description = description;
@@ -18,7 +18,7 @@ public class TransactionModel {
         this.balance = balance;
     }
 
-    public TransactionModel() {
+    public Transaction() {
 
     }
 

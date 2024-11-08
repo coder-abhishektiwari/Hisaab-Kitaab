@@ -11,13 +11,14 @@ import android.widget.TextView;
 import com.example.hisaabkitaab.Adapter.TransactionsAdapter;
 import com.example.hisaabkitaab.DataBase.DBHelper;
 import com.example.hisaabkitaab.R;
-import com.example.hisaabkitaab.model.TransactionModel;
+import com.example.hisaabkitaab.databinding.ActivityMainBinding;
+import com.example.hisaabkitaab.model.Transaction;
 
 import java.util.ArrayList;
 
 public class TransactionsActivity extends AppCompatActivity implements TransactionsAdapter.OnTransactionDeleteListener {
     private RecyclerView recyclerView;
-    private ArrayList<TransactionModel> transactionsList;
+    private ArrayList<Transaction> transactionsList;
     private TransactionsAdapter adapter;
     private TextView totalBalance;
 
@@ -32,7 +33,7 @@ public class TransactionsActivity extends AppCompatActivity implements Transacti
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         totalBalance = findViewById(R.id.txt_total_balance);
-        recyclerView = findViewById(R.id.recycler_view_all_transactions);
+        recyclerView = findViewById(R.id.rv_transactions);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadTransactions();
@@ -46,6 +47,7 @@ public class TransactionsActivity extends AppCompatActivity implements Transacti
         db.close();
         updateBalanceIndicator();
     }
+
 
     @Override
     public void onTransactionDeleted() {

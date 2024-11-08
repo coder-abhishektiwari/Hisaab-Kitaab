@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.example.hisaabkitaab.model.TransactionModel;
+import com.example.hisaabkitaab.model.Transaction;
 import com.github.mikephil.charting.data.Entry;
 
 import java.text.ParseException;
@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addTransaction(TransactionModel model) {
+    public void addTransaction(Transaction model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(TRANSACTION_ID, model.getId());
@@ -82,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-
     public void deleteTransaction(String position) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, TRANSACTION_ID + " = ?", new String[]{position});
@@ -90,14 +89,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<TransactionModel> getAllTransactions() {
+    public ArrayList<Transaction> getAllTransactions() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + TRANSACTION_ID + " DESC";
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<TransactionModel> transactionList = new ArrayList<>();
+        ArrayList<Transaction> transactionList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            TransactionModel model = new TransactionModel();
+            Transaction model = new Transaction();
             model.setId(cursor.getString(0));
             model.setDate(cursor.getString(1));
             model.setTransactor(cursor.getString(2));
@@ -111,15 +110,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return transactionList;
     }
-
-    public ArrayList<TransactionModel> getAllTransactions(int limit) {
+    public ArrayList<Transaction> getAllTransactions(int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + TRANSACTION_ID + " DESC LIMIT " + limit;
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<TransactionModel> transactionList = new ArrayList<>();
+        ArrayList<Transaction> transactionList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            TransactionModel model = new TransactionModel();
+            Transaction model = new Transaction();
             model.setId(cursor.getString(0));
             model.setDate(cursor.getString(1));
             model.setTransactor(cursor.getString(2));
@@ -143,15 +141,16 @@ public class DBHelper extends SQLiteOpenHelper {
         String firstDate = dateRange[0];
         String lastDate = dateRange[1];
 
+
         double totalSpending = 0.0;
         double totalReceived = 0.0;
         double currentBalance = 0.0;
 
         // Updated Spending Query
         String spendingQuery = "SELECT SUM(" + AMOUNT + ") AS totalSpending FROM " + TABLE_NAME +
-                " WHERE " + TRANSACTION_DATE + " >= ? AND " + TRANSACTION_DATE + " <= ? AND (" +
+                " WHERE " + TRANSACTION_DATE + " >= ? AND (" +
                 TRANSACTION_TYPE + " = 'Paid to ' OR " + TRANSACTION_TYPE + " = 'Given on lend to ')";
-        Cursor spendingCursor = db.rawQuery(spendingQuery, new String[]{firstDate, lastDate});
+        Cursor spendingCursor = db.rawQuery(spendingQuery, new String[]{firstDate});
 
         if (spendingCursor.moveToFirst()) {
             int columnIndex = spendingCursor.getColumnIndex("totalSpending");
@@ -166,14 +165,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Updated Received Query
         String receivedQuery = "SELECT SUM(" + AMOUNT + ") AS totalReceived FROM " + TABLE_NAME +
-                " WHERE " + TRANSACTION_DATE + " >= ? AND " + TRANSACTION_DATE + " <= ? AND (" +
+                " WHERE " + TRANSACTION_DATE + " >= ? AND (" +
                 TRANSACTION_TYPE + " = 'Borrowed from ' OR " + TRANSACTION_TYPE + " = 'Received from ')";
-        Cursor receivedCursor = db.rawQuery(receivedQuery, new String[]{firstDate, lastDate});
+        Cursor receivedCursor = db.rawQuery(receivedQuery, new String[]{firstDate});
 
         if (receivedCursor.moveToFirst()) {
             int columnIndex = receivedCursor.getColumnIndex("totalReceived");
             if (columnIndex != -1) {
                 totalReceived = receivedCursor.getDouble(columnIndex);
+                Log.d("DatabaseDebug", "Total Received: " + totalReceived);
             }
         } else {
             Log.d("DatabaseDebug", "No received data found.");
@@ -199,7 +199,6 @@ public class DBHelper extends SQLiteOpenHelper {
         // Return an array with totalSpending, totalReceived, and currentBalance
         return new double[]{totalSpending, totalReceived, currentBalance};
     }
-
     public String[] getCurrentMonthDateRange() {
         Calendar calendar = Calendar.getInstance();
 
@@ -215,7 +214,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return new String[]{firstDate, lastDate};
     }
-
     public double getCurrentBalance() {
         double currentBalance = 0.0;
         SQLiteDatabase db = this.getReadableDatabase();

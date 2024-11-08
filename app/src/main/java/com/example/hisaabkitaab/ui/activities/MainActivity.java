@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.hisaabkitaab.DataBase.DBHelper;
 import com.example.hisaabkitaab.helper.ChartHelper;
 import com.example.hisaabkitaab.R;
-import com.example.hisaabkitaab.model.TransactionModel;
+import com.example.hisaabkitaab.model.Transaction;
 import com.example.hisaabkitaab.Adapter.TransactionsAdapter;
 import com.example.hisaabkitaab.databinding.ActivityMainBinding;
 import com.example.hisaabkitaab.ui.fragments.AddPaymentDialogFragment;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AddPaymentDialogF
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE); // Initialize here
 
         // Load initial data
-        refreshActivity();  //loadSettings();getMonthlySummary();fetchRecentTransaction();
+        refreshActivity();
 
         // Set up click listeners
         setupToolbarClick();
@@ -217,14 +217,8 @@ public class MainActivity extends AppCompatActivity implements AddPaymentDialogF
     private void fetchRecentTransaction() {
         DBHelper db = new DBHelper(this);
         // Implementing the delete listener inline
-        TransactionsAdapter.OnTransactionDeleteListener deleteListener = new TransactionsAdapter.OnTransactionDeleteListener() {
-            @Override
-            public void onTransactionDeleted() {
-                refreshActivity();
-            }
-
-        };
-        ArrayList<TransactionModel> recentTransactionsList = db.getAllTransactions(5);
+        TransactionsAdapter.OnTransactionDeleteListener deleteListener = () -> refreshActivity();
+        ArrayList<Transaction> recentTransactionsList = db.getAllTransactions(5);
         TransactionsAdapter adapter = new TransactionsAdapter(this, recentTransactionsList,deleteListener);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
@@ -264,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements AddPaymentDialogF
         // Store the new balance as a string
         String balance = String.valueOf(newBalance);
 
-        db.addTransaction(new TransactionModel(date, paidTo, forWhich, type, amount, balance));
+        db.addTransaction(new Transaction(date, paidTo, forWhich, type, amount, balance));
         db.close();
     }
     private void showAddPaymentDialog() {
@@ -288,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements AddPaymentDialogF
         // Store the new balance as a string
         String balance = String.valueOf(newBalance);
 
-        db.addTransaction(new TransactionModel(date, fromWhere, forWhich, type, amount, balance));
+        db.addTransaction(new Transaction(date, fromWhere, forWhich, type, amount, balance));
         db.close();
     }
     private void showReceivePaymentDialog() {
@@ -300,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements AddPaymentDialogF
     @Override
     protected void onResume() {
         super.onResume();
-        loadSettings();
+        refreshActivity();
+
     }
 
 }

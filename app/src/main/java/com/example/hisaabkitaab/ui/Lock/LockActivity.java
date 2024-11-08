@@ -19,11 +19,12 @@ import com.example.hisaabkitaab.R;
 import com.example.hisaabkitaab.databinding.ActivityLockBinding;
 
 public class LockActivity extends AppCompatActivity {
-    ActivityLockBinding binding;
-    private StringBuilder enteredNumbers; //store acctual numbers
+    private ActivityLockBinding binding;
+    private StringBuilder enteredNumbers; //store actual numbers
 
-    String password, savedImageUri, name; //saved data
-    String currentText;
+    private String password, savedImageUri, name; //saved data
+    private String currentText;
+    private BiometricAuthHelper biometricAuthHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,59 +39,20 @@ public class LockActivity extends AppCompatActivity {
         savedImageUri = sharedPreferences.getString("image_uri", null);
         name = "Hi " + sharedPreferences.getString("name", null);
         password = sharedPreferences.getString("password", null);
-
-        enteredNumbers = new StringBuilder();//initialize stringBuilder
-        //setting buttons
-        binding.btnEnter1.setOnClickListener(v -> updatePassword("1"));
-        binding.btnEnter2.setOnClickListener(v -> updatePassword("2"));
-        binding.btnEnter3.setOnClickListener(v -> updatePassword("3"));
-        binding.btnEnter4.setOnClickListener(v -> updatePassword("4"));
-        binding.btnEnter5.setOnClickListener(v -> updatePassword("5"));
-        binding.btnEnter6.setOnClickListener(v -> updatePassword("6"));
-        binding.btnEnter7.setOnClickListener(v -> updatePassword("7"));
-        binding.btnEnter8.setOnClickListener(v -> updatePassword("8"));
-        binding.btnEnter9.setOnClickListener(v -> updatePassword("9"));
-        binding.btnEnter0.setOnClickListener(v -> updatePassword("0"));
-        binding.btnEnterx.setOnClickListener(v -> cutLastDigit());
-
         //check if password is set
-        //btnLogin handling
         if (password == "" || password == null){
             startActivity(new Intent(LockActivity.this, MainActivity.class));
             finish();
         }else{
+            enteredNumbers = new StringBuilder();//initialize stringBuilder
+
             setSavedImage(savedImageUri,binding.loginUserLogo);
             setSavedText(name, binding.txtGreet);
+            settingButtons();
             binding.btnLogin.setOnClickListener(v -> login());
+            binding.btnBiometric.setOnClickListener(v -> {biometricAuthHelper.authenticate();});
+            biometricAuthentication();
         }
-
-        //Biometric authentication
-        BiometricAuthHelper biometricAuthHelper = new BiometricAuthHelper(this, new BiometricAuthHelper.BiometricAuthCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, String errString) {
-                // Handle authentication error
-                Toast.makeText(LockActivity.this, "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationSucceeded() {
-                // Authentication succeeded
-                // Proceed with unlocking or other actions
-                startActivity(new Intent(LockActivity.this, MainActivity.class));
-                finish();
-                Toast.makeText(LockActivity.this, "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                // Authentication failed
-                Toast.makeText(LockActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-        biometricAuthHelper.authenticate();// Trigger authentication(automatic)
-
-        //biometric button handling
-        binding.btnBiometric.setOnClickListener(v -> {biometricAuthHelper.authenticate();});
 
     }
 
@@ -172,6 +134,49 @@ public class LockActivity extends AppCompatActivity {
             Toast.makeText(LockActivity.this, "Please enter correct password", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    public void biometricAuthentication(){
+        //Biometric authentication
+        biometricAuthHelper = new BiometricAuthHelper(this, new BiometricAuthHelper.BiometricAuthCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, String errString) {
+                // Handle authentication error
+                Toast.makeText(LockActivity.this, "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded() {
+                // Authentication succeeded
+                // Proceed with unlocking or other actions
+                startActivity(new Intent(LockActivity.this, MainActivity.class));
+                finish();
+                Toast.makeText(LockActivity.this, "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                // Authentication failed
+                Toast.makeText(LockActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        biometricAuthHelper.authenticate();// Trigger authentication(automatic)
+    }
+
+
+    private void settingButtons(){
+        //setting buttons
+        binding.btnEnter1.setOnClickListener(v -> updatePassword("1"));
+        binding.btnEnter2.setOnClickListener(v -> updatePassword("2"));
+        binding.btnEnter3.setOnClickListener(v -> updatePassword("3"));
+        binding.btnEnter4.setOnClickListener(v -> updatePassword("4"));
+        binding.btnEnter5.setOnClickListener(v -> updatePassword("5"));
+        binding.btnEnter6.setOnClickListener(v -> updatePassword("6"));
+        binding.btnEnter7.setOnClickListener(v -> updatePassword("7"));
+        binding.btnEnter8.setOnClickListener(v -> updatePassword("8"));
+        binding.btnEnter9.setOnClickListener(v -> updatePassword("9"));
+        binding.btnEnter0.setOnClickListener(v -> updatePassword("0"));
+        binding.btnEnterx.setOnClickListener(v -> cutLastDigit());
     }
 
 }
